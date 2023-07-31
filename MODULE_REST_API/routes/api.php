@@ -23,25 +23,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix("v1")->group(function() {
-    Route::prefix("auth")->group(function() {
+Route::prefix("v1")->group(function () {
+    Route::prefix("auth")->group(function () {
         Route::post("login", [SocAuthController::class, "login"]);
         Route::post("logout/{token?}", [SocAuthController::class, "logout"]);
     });
-Route::middleware("tokenMiddleware")->group(function() {
-    Route::prefix("consultations")->group(function() {
-        Route::post("/{token?}", [RequestConsultation::class, "CreateConsultation"]);
-        Route::get("/{token?}", [RequestConsultation::class, "GetConsultation"]);
-    });
+    Route::middleware("tokenMiddleware")->group(function () {
+        Route::prefix("consultations")->group(function () {
+            Route::post("/{token?}", [RequestConsultation::class, "CreateConsultation"]);
+            Route::get("/{token?}", [RequestConsultation::class, "GetConsultation"]);
+        });
 
-    Route::prefix("spots")->group(function(){
-        Route::get("/{spot_id}/{token?}/{date?}", [SpotController::class, "GetDetailSpot"]);
-        Route::get("/{token?}", [SpotController::class, "GetSpot"]);
-    });
+        Route::prefix("spots")->group(function () {
+            Route::get("/{spot_id}/{token?}/{date?}", [SpotController::class, "GetDetailSpot"]);
+            Route::get("/{token?}", [SpotController::class, "GetSpot"]);
+        });
 
-    Route::prefix("vaccinations")->group(function(){
-        Route::post("/{token?}", [VaccinationController::class, "RegisterVaccination"]);
-        Route::get("/{token?}", [VaccinationController::class, "GetAllVaccination"]);
+        Route::prefix("vaccinations")->group(function () {
+            Route::post("/{token?}", [VaccinationController::class, "RegisterVaccination"]);
+            Route::get("/{token?}", [VaccinationController::class, "GetAllVaccination"]);
+        });
     });
-});
 });

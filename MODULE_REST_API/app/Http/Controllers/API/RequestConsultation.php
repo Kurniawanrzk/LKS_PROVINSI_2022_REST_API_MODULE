@@ -12,13 +12,14 @@ use function PHPUnit\Framework\isEmpty;
 
 class RequestConsultation extends Controller
 {
-    public function CreateConsultation(Request $req) {
+    public function CreateConsultation(Request $req)
+    {
         $validator = Validator::make($req->all(), [
             "disease_history" => "nullable|string",
             "current_symptoms" => "required|string",
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 "message" => "Fill the request correctly!"
             ], 401);
@@ -28,7 +29,7 @@ class RequestConsultation extends Controller
         $req->merge([
             "society_id" => $token->id
         ]);
-        $consultation = New ConsultationModel;
+        $consultation = new ConsultationModel;
         $consultation->fill($req->except(["token"]));
         $consultation->save();
         return response()->json([
@@ -36,7 +37,8 @@ class RequestConsultation extends Controller
         ], 200);
     }
 
-    public function GetConsultation() {
+    public function GetConsultation()
+    {
         $consultationData = ConsultationModel::all();
         return response($consultationData, 200);
     }

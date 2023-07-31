@@ -10,7 +10,5 @@ class MedicalModel extends Model
     use HasFactory;
     protected $table = "medicals";
     protected $primaryKey = "id";
-    protected $fillable = [
-        
-    ];
+    // protected $fillable = [];
 }

@@ -6,23 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\RegionalModel;
 use App\Models\SocModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{ Validator };
+use Illuminate\Support\Facades\{Validator};
 
 class SocAuthController extends Controller
 {
-    public function login(Request $req) {
+    public function login(Request $req)
+    {
         $validator = Validator::make($req->all(), [
-                "id_card_number" => "required",
-                "password" => "required"
+            "id_card_number" => "required",
+            "password" => "required"
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 "message" => "Fill data correctly!"
             ], 401);
         }
 
-        if(SocModel::where("id_card_number", $req->id_card_number)->first() && SocModel::where("password", $req->password)->first()) {
+        if (SocModel::where("id_card_number", $req->id_card_number)->first() && SocModel::where("password", $req->password)->first()) {
             // Ambil data dari table 
             $soc = SocModel::where("id_card_number", $req->id_card_number)->first();
             // Buat Token Nya
@@ -43,18 +44,19 @@ class SocAuthController extends Controller
         }
     }
 
-    public function logout(Request $req) {
+    public function logout(Request $req)
+    {
         $validator = Validator::make($req->all(), [
             "token" => "required"
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 "message" => "Invalid token"
             ], 401);
         }
 
-        if(SocModel::where("login_tokens", $req->token)->first()) {
+        if (SocModel::where("login_tokens", $req->token)->first()) {
             $soc = SocModel::where("login_tokens", $req->token)->first();
             $soc->update(["login_tokens" => NULL]);
             return response()->json([
@@ -65,7 +67,5 @@ class SocAuthController extends Controller
                 "message" => "Invalid token"
             ], 401);
         }
-
-
     }
 }
